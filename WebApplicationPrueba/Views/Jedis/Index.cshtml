@@ -1,0 +1,90 @@
+﻿@model IEnumerable<WebApplicationPrueba.Models.Jedis>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm())
+{
+   <b>Genero:</b>
+  <input type="text" name="name" value="@ViewBag.Name" />
+  <input type="submit" value="Filtrar" />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Edad)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Direccion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Color)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Grado.Nombre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Edad)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Direccion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Color)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Grado.Nombre)
+        </td>
+        <td>
+            <a href="#" class="btn btn-info btn-sm btnEdit" data-value="@item.Id">Modificar</a>
+
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+</td>
+    </tr>
+}
+
+</table>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div id="ContenedorModal"></div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".btnEdit").click(function () {
+                var id = $(this).data("value");
+                $("#ContenedorModal").load("/Jedis/Edit/" + id, function () {
+                    $("#myModal").modal("show")
+                });
+            });
+        });
+        
+    </script>
+}

@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BibliotecaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Grado">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Holograma">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Duracion" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="HologramaJedi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idHolograma" Type="bigint" Nullable="false" />
+          <Property Name="idJedi" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Jedis">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="idGrado" Type="bigint" Nullable="false" />
+          <Property Name="Edad" Type="int" />
+          <Property Name="Direccion" Type="nvarchar" MaxLength="50" />
+          <Property Name="Color" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_HologramaJedi_ToTable">
+          <End Role="Holograma" Type="Self.Holograma" Multiplicity="1" />
+          <End Role="HologramaJedi" Type="Self.HologramaJedi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Holograma">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HologramaJedi">
+              <PropertyRef Name="idHolograma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HologramaJedi_ToTable_1">
+          <End Role="Jedis" Type="Self.Jedis" Multiplicity="1" />
+          <End Role="HologramaJedi" Type="Self.HologramaJedi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jedis">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HologramaJedi">
+              <PropertyRef Name="idJedi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Jedis_ToTable">
+          <End Role="Grado" Type="Self.Grado" Multiplicity="1" />
+          <End Role="Jedis" Type="Self.Jedis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grado">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Jedis">
+              <PropertyRef Name="idGrado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BibliotecaModelStoreContainer">
+          <EntitySet Name="Grado" EntityType="Self.Grado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Holograma" EntityType="Self.Holograma" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HologramaJedi" EntityType="Self.HologramaJedi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Jedis" EntityType="Self.Jedis" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_HologramaJedi_ToTable" Association="Self.FK_HologramaJedi_ToTable">
+            <End Role="Holograma" EntitySet="Holograma" />
+            <End Role="HologramaJedi" EntitySet="HologramaJedi" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HologramaJedi_ToTable_1" Association="Self.FK_HologramaJedi_ToTable_1">
+            <End Role="Jedis" EntitySet="Jedis" />
+            <End Role="HologramaJedi" EntitySet="HologramaJedi" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Jedis_ToTable" Association="Self.FK_Jedis_ToTable">
+            <End Role="Grado" EntitySet="Grado" />
+            <End Role="Jedis" EntitySet="Jedis" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BibliotecaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Grado">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Jedis" Relationship="Self.FK_Jedis_ToTable" FromRole="Grado" ToRole="Jedis" />
+        </EntityType>
+        <EntityType Name="Holograma">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Duracion" Type="Double" Nullable="false" />
+          <NavigationProperty Name="HologramaJedi" Relationship="Self.FK_HologramaJedi_ToTable" FromRole="Holograma" ToRole="HologramaJedi" />
+        </EntityType>
+        <EntityType Name="HologramaJedi">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="idHolograma" Type="Int32" Nullable="false" />
+          <Property Name="idJedi" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Holograma" Relationship="Self.FK_HologramaJedi_ToTable" FromRole="HologramaJedi" ToRole="Holograma" />
+          <NavigationProperty Name="Jedis" Relationship="Self.FK_HologramaJedi_ToTable_1" FromRole="HologramaJedi" ToRole="Jedis" />
+        </EntityType>
+        <EntityType Name="Jedis">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="idGrado" Type="Int32" Nullable="false" />
+          <Property Name="Edad" Type="Int32" />
+          <Property Name="Direccion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Grado" Relationship="Self.FK_Jedis_ToTable" FromRole="Jedis" ToRole="Grado" />
+          <NavigationProperty Name="HologramaJedi" Relationship="Self.FK_HologramaJedi_ToTable_1" FromRole="Jedis" ToRole="HologramaJedi" />
+        </EntityType>
+        <Association Name="FK_Jedis_ToTable">
+          <End Role="Grado" Type="Self.Grado" Multiplicity="1" />
+          <End Role="Jedis" Type="Self.Jedis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grado">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Jedis">
+              <PropertyRef Name="idGrado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HologramaJedi_ToTable">
+          <End Role="Holograma" Type="Self.Holograma" Multiplicity="1" />
+          <End Role="HologramaJedi" Type="Self.HologramaJedi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Holograma">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HologramaJedi">
+              <PropertyRef Name="idHolograma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_HologramaJedi_ToTable_1">
+          <End Role="Jedis" Type="Self.Jedis" Multiplicity="1" />
+          <End Role="HologramaJedi" Type="Self.HologramaJedi" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Jedis">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="HologramaJedi">
+              <PropertyRef Name="idJedi" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BibliotecaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Grado" EntityType="Self.Grado" />
+          <EntitySet Name="Holograma" EntityType="Self.Holograma" />
+          <EntitySet Name="HologramaJedi" EntityType="Self.HologramaJedi" />
+          <EntitySet Name="Jedis" EntityType="Self.Jedis" />
+          <AssociationSet Name="FK_Jedis_ToTable" Association="Self.FK_Jedis_ToTable">
+            <End Role="Grado" EntitySet="Grado" />
+            <End Role="Jedis" EntitySet="Jedis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HologramaJedi_ToTable" Association="Self.FK_HologramaJedi_ToTable">
+            <End Role="Holograma" EntitySet="Holograma" />
+            <End Role="HologramaJedi" EntitySet="HologramaJedi" />
+          </AssociationSet>
+          <AssociationSet Name="FK_HologramaJedi_ToTable_1" Association="Self.FK_HologramaJedi_ToTable_1">
+            <End Role="Jedis" EntitySet="Jedis" />
+            <End Role="HologramaJedi" EntitySet="HologramaJedi" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BibliotecaModelStoreContainer" CdmEntityContainer="BibliotecaEntities">
+          <EntitySetMapping Name="Grado">
+            <EntityTypeMapping TypeName="BibliotecaModel.Grado">
+              <MappingFragment StoreEntitySet="Grado">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Holograma">
+            <EntityTypeMapping TypeName="BibliotecaModel.Holograma">
+              <MappingFragment StoreEntitySet="Holograma">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Duracion" ColumnName="Duracion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HologramaJedi">
+            <EntityTypeMapping TypeName="BibliotecaModel.HologramaJedi">
+              <MappingFragment StoreEntitySet="HologramaJedi">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="idHolograma" ColumnName="idHolograma" />
+                <ScalarProperty Name="idJedi" ColumnName="idJedi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Jedis">
+            <EntityTypeMapping TypeName="BibliotecaModel.Jedis">
+              <MappingFragment StoreEntitySet="Jedis">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="idGrado" ColumnName="idGrado" />
+                <ScalarProperty Name="Edad" ColumnName="Edad" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
